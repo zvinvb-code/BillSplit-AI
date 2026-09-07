@@ -395,5 +395,3 @@ pytest -v
 ## Challenge
 Built with ❤️ for the **IT Geeks Vibe Coding Challenge**.  
 *Snap. Assign. Split.*
-Built with ❤️ for the **IT Geeks Vibe Coding Challenge**.  
-*Snap. Assign. Split.*
