@@ -4,12 +4,11 @@ import {
   FileImage,
   Sparkles,
   ArrowRight,
-  Flame,
-  Coffee,
-  Wine,
   Utensils,
+  Wine,
+  Coffee,
   CheckCircle2,
-  AlertCircle,
+  Receipt,
 } from 'lucide-react';
 import { SAMPLE_BILLS_DATA } from '../data/sampleBills';
 import { formatCurrency } from '../utils/formatters';
@@ -36,7 +35,7 @@ export default function Step1Upload({ onFileUpload, onSelectSample }) {
       if (file.type.startsWith('image/')) {
         onFileUpload(file);
       } else {
-        alert('Please upload a valid receipt image (JPG, PNG, or WEBP).');
+        alert('Please upload a valid receipt image (JPG or PNG up to 10MB).');
       }
     }
   };
@@ -50,31 +49,31 @@ export default function Step1Upload({ onFileUpload, onSelectSample }) {
   const sampleBillsList = Object.values(SAMPLE_BILLS_DATA);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-10">
-      {/* Hero section */}
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-12">
+      {/* Header section */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Vibe Coding Challenge Edition — Indian Dining Splitter</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold">
+          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+          <span>Multimodal Vision AI Powered</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-          Snap. Assign. <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Split.</span>
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+          Snap your bill
         </h1>
-        <p className="max-w-xl mx-auto text-slate-400 text-sm sm:text-base">
-          Upload any restaurant bill photograph. Our AI extracts dishes, GST (CGST + SGST), and service charges, lets you review every line, and calculates fair per-person shares.
+        <p className="max-w-lg mx-auto text-slate-600 text-sm sm:text-base leading-relaxed">
+          Upload a restaurant bill and we'll extract the details.
         </p>
       </div>
 
-      {/* Upload Zone */}
+      {/* Large Drag-and-Drop Card */}
       <div
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
-        className={`relative group cursor-pointer rounded-3xl border-2 border-dashed transition-all p-8 sm:p-12 text-center ${
+        className={`relative group cursor-pointer rounded-2xl border-2 border-dashed transition-all p-10 sm:p-14 text-center ${
           isDragging
-            ? 'border-emerald-400 bg-emerald-500/10 scale-[1.01]'
-            : 'border-slate-800 bg-slate-900/40 hover:border-emerald-500/50 hover:bg-slate-900/70'
+            ? 'border-emerald-500 bg-emerald-50/80 scale-[1.01]'
+            : 'border-slate-300 bg-white hover:border-emerald-500 hover:bg-slate-50/50 shadow-xs hover:shadow-md'
         }`}
       >
         <input
@@ -85,39 +84,43 @@ export default function Step1Upload({ onFileUpload, onSelectSample }) {
           onChange={handleFileChange}
         />
 
-        <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600/20 to-teal-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-emerald-500/20 transition-all">
+        <div className="flex flex-col items-center justify-center space-y-5">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform">
             <UploadCloud className="w-8 h-8" />
           </div>
 
-          <div className="space-y-1">
-            <p className="text-base font-semibold text-white">
-              Drag & drop your restaurant bill photograph here
-            </p>
-            <p className="text-xs text-slate-400">
-              Supports JPEG, PNG, WEBP receipt photos from camera or gallery
+          <div className="space-y-1.5">
+            <h3 className="text-lg font-bold text-slate-900">
+              Snap your bill
+            </h3>
+            <p className="text-sm text-slate-600">
+              Upload a restaurant bill and we'll extract the details.
             </p>
           </div>
 
           <button
             type="button"
-            className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-xs tracking-wide transition-all shadow-lg shadow-emerald-500/20"
+            className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-sm tracking-wide transition-all shadow-sm"
           >
-            Browse Receipt File
+            Upload Bill
           </button>
+
+          <p className="text-xs text-slate-400 font-medium">
+            JPG, PNG up to 10MB
+          </p>
         </div>
       </div>
 
-      {/* 1-Click Indian Demo Sample Bills */}
+      {/* 1-Click Demo Receipts */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Flame className="w-4 h-4 text-amber-400" />
-            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-300">
-              Or Try 1-Click Demo Receipts (₹ INR)
+            <Receipt className="w-4 h-4 text-emerald-600" />
+            <h2 className="text-sm font-bold text-slate-800 tracking-tight">
+              Or test with sample receipts (₹ INR)
             </h2>
           </div>
-          <span className="text-xs text-slate-500">Instant judge walkthrough</span>
+          <span className="text-xs text-slate-500 font-medium">1-Click instant test</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -125,41 +128,41 @@ export default function Step1Upload({ onFileUpload, onSelectSample }) {
             <div
               key={sample.id}
               onClick={() => onSelectSample(sample.id)}
-              className="group cursor-pointer rounded-2xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800 hover:border-emerald-500/50 p-5 transition-all hover:shadow-xl hover:shadow-emerald-500/10 flex flex-col justify-between"
+              className="group cursor-pointer rounded-2xl bg-white border border-slate-200 hover:border-emerald-400 p-5 transition-all shadow-xs hover:shadow-md flex flex-col justify-between"
             >
               <div className="space-y-3">
                 <div className="flex items-start justify-between">
-                  <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700/60 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500/10 group-hover:border-emerald-500/30 transition-colors">
+                  <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-colors">
                     {sample.id === 'punjab_grill' && <Utensils className="w-5 h-5" />}
                     {sample.id === 'social_cafe' && <Wine className="w-5 h-5" />}
                     {sample.id === 'saravana_bhavan' && <Coffee className="w-5 h-5" />}
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-800 text-slate-400 group-hover:bg-emerald-500/10 group-hover:text-emerald-400 border border-transparent group-hover:border-emerald-500/20 transition-all">
-                    {sample.items.length} Items
+                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-600 group-hover:bg-emerald-50 group-hover:text-emerald-700 transition-colors">
+                    {sample.items.length} items
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="font-bold text-white text-base group-hover:text-emerald-300 transition-colors">
+                  <h3 className="font-bold text-slate-900 text-base group-hover:text-emerald-700 transition-colors">
                     {sample.restaurant_name}
                   </h3>
-                  <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">
+                  <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
                     {sample.notes}
                   </p>
                 </div>
               </div>
 
-              <div className="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between">
+              <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold block">
+                  <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">
                     Bill Total
                   </span>
-                  <span className="text-base font-bold text-white font-mono-nums">
+                  <span className="text-base font-bold text-slate-900 font-mono-nums">
                     {formatCurrency(sample.total, sample.currency)}
                   </span>
                 </div>
 
-                <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all">
+                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 group-hover:bg-emerald-600 group-hover:text-white transition-all">
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -168,19 +171,19 @@ export default function Step1Upload({ onFileUpload, onSelectSample }) {
         </div>
       </div>
 
-      {/* Feature highlights badge */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-800/60 text-xs text-slate-400">
-        <div className="flex items-center gap-2.5">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+      {/* Feature highlights */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-slate-200/80 text-xs text-slate-600">
+        <div className="flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
           <span>Multimodal Gemini 2.5 OCR</span>
         </div>
-        <div className="flex items-center gap-2.5">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span>Indian GST & Service Charge Math</span>
+        <div className="flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          <span>GST & Service Charge Split</span>
         </div>
-        <div className="flex items-center gap-2.5">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span>Zero Penny Rounding Discrepancy</span>
+        <div className="flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          <span>Zero-Penny Discrepancy Math</span>
         </div>
       </div>
     </div>

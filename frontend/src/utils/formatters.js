@@ -7,7 +7,7 @@ export function formatCurrency(amount, currency = '₹') {
     return `${currency}0.00`;
   }
   const numericAmount = Number(amount);
-  // Format with Indian numbering system (lakhs, crores) if ₹
+  // Format with Indian numbering system (lakhs, crores) if ₹ or INR
   if (currency === '₹' || currency === 'INR') {
     return `₹${numericAmount.toLocaleString('en-IN', {
       minimumFractionDigits: 2,
@@ -26,39 +26,39 @@ export function formatPercentage(val) {
 }
 
 /**
- * Strict confidence rules:
- * >= 0.90 -> High confidence
- * 0.75–0.89 -> Medium confidence
- * < 0.75 -> Low confidence
+ * Strict confidence rules for modern light fintech theme:
+ * >= 0.90 -> High confidence (Emerald)
+ * 0.75–0.89 -> Medium confidence (Amber)
+ * < 0.75 -> Low confidence (Rose)
  */
 export function getConfidenceBadge(score) {
   const s = Number(score) || 0;
   if (s >= 0.90) {
     return {
       tier: 'high',
-      label: 'High confidence',
+      label: 'High',
       percentage: `${Math.round(s * 100)}%`,
-      bg: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-      dot: 'bg-emerald-400',
-      textColor: 'text-emerald-400',
+      bg: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      dot: 'bg-emerald-500',
+      textColor: 'text-emerald-700',
     };
   } else if (s >= 0.75) {
     return {
       tier: 'medium',
-      label: 'Medium confidence',
+      label: 'Medium',
       percentage: `${Math.round(s * 100)}%`,
-      bg: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-      dot: 'bg-amber-400',
-      textColor: 'text-amber-400',
+      bg: 'bg-amber-50 text-amber-700 border-amber-200',
+      dot: 'bg-amber-500',
+      textColor: 'text-amber-700',
     };
   } else {
     return {
       tier: 'low',
-      label: 'Low confidence',
+      label: 'Low',
       percentage: `${Math.round(s * 100)}%`,
-      bg: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
-      dot: 'bg-rose-400',
-      textColor: 'text-rose-400',
+      bg: 'bg-rose-50 text-rose-700 border-rose-200',
+      dot: 'bg-rose-500',
+      textColor: 'text-rose-700',
     };
   }
 }

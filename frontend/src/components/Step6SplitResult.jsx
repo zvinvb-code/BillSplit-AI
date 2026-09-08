@@ -28,6 +28,8 @@ export default function Step6SplitResult({
 
   const { people_calculations: peopleCalcs, summary } = splitResult;
 
+  const isReconciled = summary && Math.abs(summary.discrepancy || 0) < 0.01 && (!summary.unassigned_items || summary.unassigned_items.length === 0);
+
   // Format WhatsApp / UPI friendly text
   const generateWhatsAppText = () => {
     const lines = [];
@@ -73,31 +75,31 @@ export default function Step6SplitResult({
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-8 print:p-0 print:text-black">
       {/* Header Banner */}
       <div className="text-center space-y-2">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Step 6: Mathematical Split Complete</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold">
+          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+          <span>Mathematical Split Complete</span>
         </div>
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
           Final Bill Split Breakdown
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-400 max-w-lg mx-auto">
+        </h1>
+        <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto">
           Every rupee distributed fairly with proportional GST and service charges. Zero rounding discrepancy.
         </p>
       </div>
 
       {/* Action Buttons Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-slate-900/80 border border-slate-800 print:hidden">
+      <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white border border-slate-200 shadow-xs print:hidden">
         <div className="flex items-center gap-2">
           <button
             onClick={onBackToAssign}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Adjust Assignments</span>
           </button>
           <button
             onClick={onReset}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
             <span>New Bill</span>
@@ -107,7 +109,7 @@ export default function Step6SplitResult({
         <div className="flex items-center gap-2">
           <button
             onClick={handlePrint}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 transition-colors shadow-2xs"
           >
             <Printer className="w-4 h-4" />
             <span>Print Summary</span>
@@ -115,7 +117,7 @@ export default function Step6SplitResult({
 
           <button
             onClick={handleCopy}
-            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs tracking-wide transition-all shadow-lg shadow-emerald-500/20"
+            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs tracking-wide transition-all shadow-xs"
           >
             {copied ? (
               <>
@@ -132,30 +134,38 @@ export default function Step6SplitResult({
         </div>
       </div>
 
-      {/* Bill Reconciliation Banner */}
-      <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-teal-950/40 border border-emerald-500/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
-            <ShieldCheck className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-sm font-bold text-white">Mathematical Reconciliation</h3>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
-                100% Balanced
+      {/* Bill Hero Summary & Reconciliation Badge */}
+      <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="space-y-2">
+          <div className="flex items-center gap-3 flex-wrap">
+            <h3 className="text-xl font-bold text-slate-900">
+              {bill.restaurant_name || 'Restaurant Receipt'}
+            </h3>
+            {/* Reconciliation Badge */}
+            {isReconciled ? (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <span>Total reconciled ✓</span>
               </span>
-            </div>
-            <p className="text-xs text-slate-400">
-              Bill Total: <span className="text-white font-mono font-semibold">{formatCurrency(summary.grand_total, currency)}</span> • Sum of Person Splits: <span className="text-white font-mono font-semibold">{formatCurrency(summary.calculated_total_sum, currency)}</span> • Penny Discrepancy: <span className="text-emerald-400 font-mono font-semibold">{formatCurrency(summary.discrepancy, currency)}</span>
-            </p>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs">
+                <AlertTriangle className="w-4 h-4 text-amber-600" />
+                <span>Total mismatch detected ⚠</span>
+              </span>
+            )}
           </div>
+
+          <p className="text-xs text-slate-500 font-mono">
+            Calculated Sum: <span className="text-slate-900 font-semibold">{formatCurrency(summary.calculated_total_sum, currency)}</span> • Printed Total: <span className="text-slate-900 font-semibold">{formatCurrency(summary.grand_total, currency)}</span> • Reconciled Discrepancy: <span className="text-emerald-700 font-semibold">{formatCurrency(summary.discrepancy, currency)}</span>
+          </p>
         </div>
 
-        <div className="text-center sm:text-right shrink-0">
-          <span className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold block">
-            {bill.restaurant_name}
+        {/* Total Bill Hero Display */}
+        <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-left md:text-right shrink-0 min-w-[200px]">
+          <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold block">
+            Total Bill
           </span>
-          <span className="text-2xl font-black text-emerald-400 font-mono-nums">
+          <span className="text-3xl font-black text-slate-900 font-mono-nums">
             {formatCurrency(summary.grand_total, currency)}
           </span>
         </div>
@@ -163,41 +173,44 @@ export default function Step6SplitResult({
 
       {/* Unassigned alert if any */}
       {summary.unassigned_items && summary.unassigned_items.length > 0 && (
-        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center gap-3 text-xs text-amber-200">
-          <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+        <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-3 text-xs text-amber-900">
+          <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
           <span>
             Note: <strong>{summary.unassigned_items.join(', ')}</strong> ({formatCurrency(summary.unassigned_subtotal, currency)}) were left unassigned.
           </span>
         </div>
       )}
 
-      {/* Cards Grid: Per-Person Calculations */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {peopleCalcs.map((p, idx) => (
+      {/* Hero People Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {peopleCalcs.map((p) => (
           <div
             key={p.person_id}
-            className="rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 p-6 flex flex-col justify-between shadow-xl transition-all"
+            className="rounded-2xl bg-white border border-slate-200 hover:border-emerald-300 p-6 flex flex-col justify-between shadow-xs hover:shadow-md transition-all space-y-6"
           >
-            {/* Person Card Header */}
+            {/* Card Header: Person & Total Amount */}
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 font-black text-base shadow-md">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-2xs"
+                    style={{ backgroundColor: p.color || '#059669' }}
+                  >
                     {p.name.charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-base">{p.name}</h3>
-                    <span className="text-[11px] text-slate-400 font-mono-nums">
-                      {formatPercentage(p.percentage_of_bill)} of bill
+                    <h3 className="font-bold text-slate-900 text-base">{p.name}</h3>
+                    <span className="text-xs text-slate-500 font-mono-nums">
+                      {formatPercentage(p.percentage_of_bill)} of total
                     </span>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <span className="text-[10px] text-slate-500 uppercase tracking-wider block font-semibold">
-                    To Pay
+                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-bold">
+                    Amount
                   </span>
-                  <span className="text-xl font-black text-emerald-400 font-mono-nums">
+                  <span className="text-xl font-extrabold text-emerald-700 font-mono-nums">
                     {formatCurrency(p.total_amount, currency)}
                   </span>
                 </div>
@@ -205,25 +218,25 @@ export default function Step6SplitResult({
 
               {/* Itemized Dishes List */}
               <div className="space-y-2">
-                <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
                   Dishes & Shares:
                 </span>
                 {p.items.length === 0 ? (
-                  <p className="text-xs text-slate-500 italic">No dishes assigned</p>
+                  <p className="text-xs text-slate-400 italic">No dishes assigned</p>
                 ) : (
-                  <div className="space-y-1.5 max-h-44 overflow-y-auto pr-1">
+                  <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
                     {p.items.map((item, itemIdx) => (
                       <div
                         key={itemIdx}
-                        className="flex items-center justify-between text-xs py-1 border-b border-slate-800/40 text-slate-300"
+                        className="flex items-center justify-between text-xs py-1 border-b border-slate-100 text-slate-700"
                       >
                         <div className="truncate pr-2">
-                          <span className="font-medium text-white">{item.name}</span>
+                          <span className="font-semibold text-slate-900">{item.name}</span>
                           <span className="text-[10px] text-slate-500 block">
                             {Math.round(item.share_fraction * 100)}% share
                           </span>
                         </div>
-                        <span className="font-mono-nums font-semibold text-slate-200 shrink-0">
+                        <span className="font-mono-nums font-semibold text-slate-900 shrink-0">
                           {formatCurrency(item.share_amount, currency)}
                         </span>
                       </div>
@@ -234,34 +247,34 @@ export default function Step6SplitResult({
             </div>
 
             {/* Overheads Breakdown (Tax, Service, Discount) */}
-            <div className="pt-4 mt-4 border-t border-slate-800 space-y-1.5 text-xs text-slate-400">
+            <div className="pt-4 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
               <div className="flex justify-between">
                 <span>Food Items Share</span>
-                <span className="font-mono-nums text-white">
+                <span className="font-mono-nums font-semibold text-slate-900">
                   {formatCurrency(p.items_subtotal, currency)}
                 </span>
               </div>
 
               {p.tax_share > 0 && (
-                <div className="flex justify-between text-slate-400">
-                  <span>GST (CGST + SGST) Share</span>
-                  <span className="font-mono-nums text-slate-200">
+                <div className="flex justify-between text-slate-600">
+                  <span>GST Tax Share</span>
+                  <span className="font-mono-nums">
                     +{formatCurrency(p.tax_share, currency)}
                   </span>
                 </div>
               )}
 
               {p.service_charge_share > 0 && (
-                <div className="flex justify-between text-slate-400">
+                <div className="flex justify-between text-slate-600">
                   <span>Service Charge Share</span>
-                  <span className="font-mono-nums text-slate-200">
+                  <span className="font-mono-nums">
                     +{formatCurrency(p.service_charge_share, currency)}
                   </span>
                 </div>
               )}
 
               {p.discount_share > 0 && (
-                <div className="flex justify-between text-emerald-400">
+                <div className="flex justify-between text-emerald-700">
                   <span>Discount Share</span>
                   <span className="font-mono-nums font-semibold">
                     -{formatCurrency(p.discount_share, currency)}
@@ -270,9 +283,9 @@ export default function Step6SplitResult({
               )}
 
               {/* Total Row */}
-              <div className="pt-2 mt-2 border-t border-slate-800 flex justify-between font-bold text-sm text-white">
+              <div className="pt-2 mt-2 border-t border-slate-200 flex justify-between font-bold text-sm text-slate-900">
                 <span>Total for {p.name}</span>
-                <span className="text-emerald-400 font-mono-nums text-base">
+                <span className="text-emerald-700 font-mono-nums text-base">
                   {formatCurrency(p.total_amount, currency)}
                 </span>
               </div>

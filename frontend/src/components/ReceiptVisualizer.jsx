@@ -1,20 +1,20 @@
 import React from 'react';
-import { Receipt, FileText, CheckCircle2 } from 'lucide-react';
+import { Receipt, FileText } from 'lucide-react';
 import { formatCurrency } from '../utils/formatters';
 
 export default function ReceiptVisualizer({ bill, customImageSrc }) {
   if (customImageSrc) {
     return (
-      <div className="relative rounded-2xl overflow-hidden border border-slate-700/60 shadow-2xl bg-slate-900/80 group">
+      <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white group">
         <div className="max-h-[560px] overflow-y-auto flex items-center justify-center p-2">
           <img
             src={customImageSrc}
             alt="Uploaded Bill"
-            className="w-full h-auto object-contain rounded-xl shadow-md"
+            className="w-full h-auto object-contain rounded-xl shadow-xs"
           />
         </div>
-        <div className="absolute top-3 left-3 bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-700/60 flex items-center gap-2 text-xs text-slate-300">
-          <FileText className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-200 flex items-center gap-2 text-xs text-slate-700 shadow-xs font-medium">
+          <FileText className="w-3.5 h-3.5 text-emerald-600" />
           <span>Uploaded Photograph</span>
         </div>
       </div>
@@ -25,9 +25,9 @@ export default function ReceiptVisualizer({ bill, customImageSrc }) {
   const currency = bill?.currency || '₹';
 
   return (
-    <div className="relative mx-auto max-w-sm rounded-xl overflow-hidden shadow-2xl bg-[#faf8f5] text-slate-900 border border-amber-200/50 font-mono-nums select-none transition-transform">
+    <div className="relative mx-auto max-w-sm rounded-xl overflow-hidden shadow-md bg-[#faf8f5] text-slate-900 border border-amber-200/60 font-mono-nums select-none transition-transform">
       {/* Thermal receipt top serrated edge */}
-      <div className="h-3 bg-slate-950 flex overflow-hidden">
+      <div className="h-3 bg-slate-200 flex overflow-hidden">
         {Array.from({ length: 24 }).map((_, i) => (
           <div
             key={i}
@@ -38,7 +38,7 @@ export default function ReceiptVisualizer({ bill, customImageSrc }) {
 
       <div className="p-6 text-xs text-slate-800 space-y-4">
         {/* Header */}
-        <div className="text-center border-b border-dashed border-slate-400/60 pb-3">
+        <div className="text-center border-b border-dashed border-slate-300 pb-3">
           <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 text-amber-400 mb-1.5">
             <Receipt className="w-4 h-4" />
           </div>
@@ -58,7 +58,7 @@ export default function ReceiptVisualizer({ bill, customImageSrc }) {
         </div>
 
         {/* Item List Header */}
-        <div className="border-b border-dashed border-slate-400/60 pb-1">
+        <div className="border-b border-dashed border-slate-300 pb-1">
           <div className="grid grid-cols-12 font-bold text-slate-900 text-[11px] pb-1 uppercase tracking-wide">
             <span className="col-span-6">Item</span>
             <span className="col-span-2 text-center">Qty</span>
@@ -84,7 +84,7 @@ export default function ReceiptVisualizer({ bill, customImageSrc }) {
         </div>
 
         {/* Subtotal & Taxes Breakdown */}
-        <div className="border-t border-dashed border-slate-400/60 pt-2.5 space-y-1 text-[11px]">
+        <div className="border-t border-dashed border-slate-300 pt-2.5 space-y-1 text-[11px]">
           <div className="flex justify-between text-slate-600">
             <span>Subtotal</span>
             <span className="font-mono font-semibold text-slate-900">
@@ -127,7 +127,7 @@ export default function ReceiptVisualizer({ bill, customImageSrc }) {
           {/* Grand Total */}
           <div className="border-t-2 border-slate-900 pt-2 mt-2 flex justify-between items-baseline font-bold text-sm text-slate-950">
             <span>GRAND TOTAL</span>
-            <span className="text-base font-mono text-emerald-800">
+            <span className="text-base font-mono text-emerald-700">
               {formatCurrency(bill?.total, currency)}
             </span>
           </div>
@@ -141,7 +141,7 @@ export default function ReceiptVisualizer({ bill, customImageSrc }) {
       </div>
 
       {/* Serrated bottom edge */}
-      <div className="h-3 bg-slate-950 flex overflow-hidden">
+      <div className="h-3 bg-slate-200 flex overflow-hidden">
         {Array.from({ length: 24 }).map((_, i) => (
           <div
             key={i}

@@ -1,32 +1,22 @@
 import React from 'react';
-import {
-  UploadCloud,
-  Sparkles,
-  FileCheck2,
-  Users,
-  UtensilsCrossed,
-  Calculator,
-  Check,
-} from 'lucide-react';
+import { UploadCloud, FileCheck2, Users, Calculator, Check } from 'lucide-react';
 
 const STEPS = [
-  { id: 1, label: 'Upload Bill', shortLabel: 'Upload', icon: UploadCloud },
-  { id: 2, label: 'AI Scan', shortLabel: 'Scan', icon: Sparkles },
-  { id: 3, label: 'Review & Edit', shortLabel: 'Review', icon: FileCheck2 },
-  { id: 4, label: 'Add Friends', shortLabel: 'Friends', icon: Users },
-  { id: 5, label: 'Assign Items', shortLabel: 'Assign', icon: UtensilsCrossed },
-  { id: 6, label: 'Final Split', shortLabel: 'Split', icon: Calculator },
+  { id: 1, label: 'Upload', number: '1', icon: UploadCloud },
+  { id: 2, label: 'Review', number: '2', icon: FileCheck2 },
+  { id: 3, label: 'Assign', number: '3', icon: Users },
+  { id: 4, label: 'Split', number: '4', icon: Calculator },
 ];
 
 export default function StepIndicator({ currentStep, maxCompletedStep, onStepClick }) {
   return (
-    <div className="w-full py-4 border-b border-slate-800/60 bg-slate-950/40">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+    <div className="w-full py-4 border-b border-slate-200 bg-white/80 backdrop-blur-xs">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between relative">
-          {/* Connector Line behind steps */}
-          <div className="absolute top-5 left-6 right-6 h-0.5 bg-slate-800 -z-0">
+          {/* Progress Connector Line */}
+          <div className="absolute top-5 left-8 right-8 h-0.5 bg-slate-200 -z-0">
             <div
-              className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500 ease-out"
+              className="h-full bg-emerald-600 transition-all duration-500 ease-out"
               style={{
                 width: `${Math.min(100, ((currentStep - 1) / (STEPS.length - 1)) * 100)}%`,
               }}
@@ -42,49 +32,42 @@ export default function StepIndicator({ currentStep, maxCompletedStep, onStepCli
             return (
               <button
                 key={step.id}
-                disabled={!isClickable || step.id === 2} // Step 2 is active scanner
+                disabled={!isClickable}
                 onClick={() => isClickable && onStepClick(step.id)}
                 className={`relative z-10 flex flex-col items-center group focus:outline-none transition-all ${
                   isClickable ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'
                 }`}
               >
-                {/* Circle Badge */}
+                {/* Step Circle Badge */}
                 <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300 ${
                     isCurrent
-                      ? 'bg-emerald-500 text-slate-950 font-bold ring-4 ring-emerald-500/20 shadow-lg shadow-emerald-500/30 scale-105'
+                      ? 'bg-emerald-600 text-white shadow-md ring-4 ring-emerald-100 scale-105'
                       : isCompleted
-                      ? 'bg-emerald-950/90 text-emerald-400 border border-emerald-500/40'
-                      : 'bg-slate-900 text-slate-500 border border-slate-800 group-hover:border-slate-700'
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-slate-100 text-slate-500 border border-slate-200 group-hover:border-slate-300'
                   }`}
                 >
                   {isCompleted ? (
-                    <Check className="w-4 h-4 stroke-[2.5]" />
+                    <Check className="w-5 h-5 stroke-[2.5]" />
                   ) : (
-                    <Icon className={`w-4 h-4 ${isCurrent ? 'animate-pulse' : ''}`} />
+                    <div className="flex items-center gap-1">
+                      <Icon className="w-4 h-4" />
+                    </div>
                   )}
                 </div>
 
-                {/* Label */}
+                {/* Step Label */}
                 <span
-                  className={`mt-2 text-[11px] font-medium tracking-tight transition-colors hidden sm:block ${
+                  className={`mt-2 text-xs font-medium tracking-tight transition-colors ${
                     isCurrent
-                      ? 'text-emerald-400 font-semibold'
+                      ? 'text-emerald-700 font-bold'
                       : isCompleted
-                      ? 'text-slate-300'
+                      ? 'text-slate-900 font-semibold'
                       : 'text-slate-500'
                   }`}
                 >
-                  {step.label}
-                </span>
-
-                {/* Mobile short label */}
-                <span
-                  className={`mt-1.5 text-[10px] font-medium sm:hidden ${
-                    isCurrent ? 'text-emerald-400 font-semibold' : 'text-slate-500'
-                  }`}
-                >
-                  {step.shortLabel}
+                  {step.number} {step.label}
                 </span>
               </button>
             );
